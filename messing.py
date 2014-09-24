@@ -4,24 +4,32 @@ import os
 
 from collections import deque
 
-
-
-
-
 class Menu(object):
+    '''
+    Proof of concept of a looping menu, just testing for some
+    widget I want to make in curses
+    Features:
+        - Can manipulate any size menu
+        - Works both directions 'duh'
+        - Can show a variable portion of the menu default=4
+    '''
 
     def __init__(self, menu, name='generic'):
+
         self.name = name
         self.menu = deque(menu)
 
 
     def printMenu(self, down=True):
-        print len(self.menu)
-        if len(self.menu) < self.menuSize:
-            menuSize = len(self.menu)
-        print ("DEBUG: menuSize = {}".format(self.menuSize))
 
-        items = list(self.menu)[:self.menuSize]
+        if len(self.menu) < self.shownSize:
+            self.menuSize = len(self.menu)
+        else:
+            self.menuSize = len(self.menu)
+
+        print ("DEBUG: shownSize = {}".format(self.shownSize))
+        print ('DEBUG menuSize: {}'.format(self.menuSize))
+        items = list(self.menu)[:self.shownSize]
         for e in items:
             print ('DEBUG : value: {:<4}action: {:<8}'.format(e[0], e[1]))
 
@@ -31,17 +39,10 @@ class Menu(object):
             self.menu.rotate(1)
 
 
-    def showMenu(self, menuSize=4):
-        ''' 
-            Proof of concept of the looping menu
-            Features:
-                - Can manipulate any size menu
-                - Works both directions 'duh'
-                - Can show a variable portion of the menu default=4
-        '''
-        self.menuSize = menuSize
+    def showMenu(self, shownSize=4):
+
+        self.shownSize = shownSize
         down =True
-        #self.printMenu(down=False)
         while True:
             os.system('clear')
             print('\n{:^}\n'.format(self.name))
@@ -54,18 +55,16 @@ class Menu(object):
                 down = False
 
 
-
-
 def main():
-    menu1 = [('1', 'menu'),
-            ('2', 'cadabra'),
-            ('3', 'man'),
-            ('4', 'world'),
-            ('5', 'lol'),
-            ('6', 'debug'),
-            ('7', 'blah')]
+    menu1 = [('1', 'abra'),
+             ('2', 'cadabra'),
+             ('3', 'hello'),
+             ('4', 'world'),
+             ('5', 'lol'),
+             ('6', 'debug'),
+             ('7', 'blah')]
 
-    menu2 = [('1', 'menu'),
+    menu2 = [('1', 'abra'),
              ('2', 'cadabra')]
     t1 = Menu(menu1, name = '7 items in list 4 shown')
     t2 = Menu(menu2, name = 'Test small list default')
@@ -83,8 +82,9 @@ def main():
         pass
 
     try:
-        t3.showMenu(menuSize=6)
+        t3.showMenu(shownSize=6)
     except KeyboardInterrupt:
+        print
         pass
 
 if __name__ =='__main__':
