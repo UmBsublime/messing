@@ -21,7 +21,7 @@ class MyApp():
 
         self.contentWin = menu.ContentWin(contentWin)
         self.contentWin.write('Hello welcome to this beta interface')
-        self.statusWin = menu.StatusWin(statusWin)
+        self.statusWin = menu.StatusWin(statusWin, win_size['STATUS'])
 
         self.statusWin.write('>DEMO<  cols: {} lines: {}'.format(curses.COLS, curses.LINES))
 
@@ -92,7 +92,7 @@ def main(stdscr):
                 'STATUS': {'height' : 3,
                            'width': WIDTH - 2,
                            'start_y': BASE_Y + 1,
-                           'start_x': BASE_X}
+                           'start_x': BASE_X + 1},
                 'STATUS_HEIGHT' : 3,
                 'STATUS_WIDTH' : WIDTH - 2,
                 'STATUS_BASE_X' : BASE_X + 1,
