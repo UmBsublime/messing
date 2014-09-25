@@ -20,39 +20,50 @@ class Menu(object):
         self.menu = deque(menu)
 
 
-    def printMenu(self, down=True):
+    def _print_menu(self, direction=''):
+        '''
+            dir can be  'u'p 'd'own 'l'eft 'r'ight
+        '''
+        if direction == 'u':
+            self.menu.rotate(-1)
+        elif direction == 'd':
+            self.menu.rotate(1)
+        elif direction == 'l':
+            pass
+        elif direction == 'r':
+            pass
 
-        if len(self.menu) < self.shownSize:
-            self.menuSize = len(self.menu)
+        print ('DEBUG choice: {}'.format(direction))
+
+
+        if len(self.menu) < self.shown_size:
+            self.menu_size = len(self.menu)
         else:
-            self.menuSize = len(self.menu)
+            self.menu_size = len(self.menu)
 
-        print ("DEBUG: shownSize = {}".format(self.shownSize))
-        print ('DEBUG menuSize: {}'.format(self.menuSize))
-        items = list(self.menu)[:self.shownSize]
+        print ("DEBUG shown_size: {}".format(self.shown_size))
+        print ('DEBUG menu_size: {}'.format(self.menu_size))
+        items = list(self.menu)[:self.shown_size]
         for e in items:
             print ('DEBUG : value: {:<4}action: {:<8}'.format(e[0], e[1]))
 
-        if down:
-            self.menu.rotate(-1)
-        else:
-            self.menu.rotate(1)
 
 
-    def showMenu(self, shownSize=4):
 
-        self.shownSize = shownSize
-        down =True
+    def mainLoop(self, shown_size=4):
+
+        self.shown_size = shown_size
+        self._print_menu()
+        os.system('clear')
+        c='None'
         while True:
-            os.system('clear')
+
             print('\n{:^}\n'.format(self.name))
             print('Press ^C to move on')
-            self.printMenu(down=down)
+            self._print_menu(c)
             c = raw_input('direction [u/d]: ')
-            if str(c) == 'd':
-                down = True
-            else:
-                down = False
+            os.system('clear')
+
 
 
 def main():
@@ -72,17 +83,17 @@ def main():
 
 
     try:
-        t1.showMenu()
+        t1.mainLoop()
     except KeyboardInterrupt:
         pass
 
     try:
-        t2.showMenu()
+        t2.mainLoop()
     except KeyboardInterrupt:
         pass
 
     try:
-        t3.showMenu(shownSize=6)
+        t3.mainLoop(shown_size=6)
     except KeyboardInterrupt:
         print
         pass
